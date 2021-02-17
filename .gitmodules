@@ -1,0 +1,3 @@
+[submodule "Krabs\\vendor\\spdlog"]
+	path = Krabs\\vendor\\spdlog
+	url = https://github.com/gabime/spdlog
