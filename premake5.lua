@@ -19,8 +19,7 @@ project "Krabs"
 
 	--precompile header do not work for some reason
 	--but setting this up manually in vs work
-	--pchheader "Krpch.h"
-	--pchsource "Krabs/src/Krpch.cpp"
+
 
 	files
 	{
