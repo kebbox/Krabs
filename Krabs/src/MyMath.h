@@ -2,7 +2,8 @@
 #include "Krpch.h"
 #include "DataStruct.h"
 
-//matematical utility
+//matematical utility;
+
 namespace MyMath {
 	const float lightspeed = 299792458.0f;
 	const float plankConst = 6.62607E-34f;
@@ -12,8 +13,11 @@ namespace MyMath {
 	const float epsilon0 = 8.85419E-12f;
 	const float protonCharge = 1.602176634E-19f;
 	const float electronMass = 9.1093837015E-31f;
-	const float bohrRay = 5.291777721092E-11;
+	const float bohrRay = 5.291777721092E-11f;
+	const float avogadroConst = 6.022E23f;
 
+	void combinationUtil(std::vector<int> arr, std::vector <int>& result,  int n, int r, int index, std::vector<int> data, int i);
+	void getCombination(std::vector<int> arr, std::vector <int>& result, int n, int r);
 	void gradientCalculator(std::vector <float>& differential, float start, float end, float increment, parameters par, void(*func)(float& , const float&, const float&, const float&, parameters));
 	void Laplacian(std::vector <float>& variable, float start, float end, float increment, parameters par, void(*func)(float&, float, float, float, parameters)); // func(x, y, z)
 	void secondDerivativeCalculator(const std::vector <float>& variable, std::vector <float>& outResult, parameters par,  void(*func)(float& , const float&, parameters)); //func(r)
@@ -24,19 +28,23 @@ namespace MyMath {
 
 
 	void sumBeteenVector(std::vector <float>& result, const std::vector <float>&  sumBy);
-	void diffBeteenVector(std::vector <float>& result, const const std::vector <float>& sumBy);
+	void diffBeteenVector(std::vector <float>& result, const std::vector <float>& sumBy);
 	void createVector(std::vector<float>& vec, float start, float end, int dimention);
 	void createVector3d(std::vector<vec3d>& vec, float start, float end, int dimention);
 
-	void vectorByScalar(std::vector<float>& vec, float scalar);
+	void vectorByConst(std::vector<float>& vec, float scalar);
 	void vectorByVector(std::vector <float>& result, const std::vector <float>& mul);
 	void OneDimMatrixProduct(std::vector <float>& result, const std::vector <float>& mat2);
-	
 
+
+	float vecDist(const std::vector<float>& pt1, const std::vector<float>& pt2);
 	float vectorSum(std::vector <float>& vec, int dimention);
 	float minValue(const std::vector<float>& vec);
 	float maxValue(const std::vector <float>& vec);
 	float absMax(const std::vector <float>& vec);
+	float calculateAngle(const std::vector<float>& vertex1, const std::vector<float>& vertex2, const std::vector<float>& vertexAngle);
+	float vectorNorm(const std::vector<float>& vec);
+	float scalarProduct(const std::vector<float>& vec1, const std::vector<float>& vec2);
 	
 	void fromSpatialToSpherical(std::vector<vec3d> &space);
 

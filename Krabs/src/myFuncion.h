@@ -22,11 +22,12 @@ namespace myFuncion {
 
 		float thirdEquation = (factorial(int(2.0f * coeffi)) * factorial(int(2.0f * coeffj)) * factorial(int(2.0f * coeffk)));
 
-		vectorByScalar(coeff, alpha);
+		vectorByConst(coeff, alpha);
 		float fourthEquation = pow(x, coeffi) * pow(y, coeffj) * pow(z, coeffk) * exponentialSum(neper, coeff);
 
 		float finalEquation = firstEquation * (pow((secondEquation / thirdEquation), 0.5f)) * fourthEquation;
 	}
+
 
 	void monoatomicElectron(float& result, float r, parameters p)
 	{
@@ -35,9 +36,13 @@ namespace myFuncion {
 		result = (sin(r * pi * n));
 	}
 
-	void potentialEnergyElectron(float& result, const float &r, parameters p) {
-		result = (pow(protonCharge, 2.0f)) / ( r);	
+	void electrostaticEnergy(float& result, const float &r) {
+
+		//* Remember 1E+10f conversion from amstrong to meters
+		//if unit is in armstrong
+		result = (pow(protonCharge, 2.0f)) / ( r*epsilon0*4 *pi);	
 	}
+
 
 	void hydrogenLikePotential(float& result, const float& r, parameters p) {
 		float l = 1;
@@ -47,10 +52,12 @@ namespace myFuncion {
 		result = ((pow(protonCharge, 2.0f)) / (r* 4*pi *epsilon0)) + (1 / (8 * pow(pi, 2) * electronMass)) * (pow(plankConst, 2) * l * (l + 1)) * (1 / pow(r, 2)) *laguerre;
 	}
 
+
 	void Laguerre(float& result,const float& r, parameters p) {
 		//note the r *Laguerre
 		result = r*(- r + 1);
 	}
+
 
 	void sphericalArmonical(float& result, const vec2d &angles, parameters p)
 	{
@@ -60,6 +67,7 @@ namespace myFuncion {
 		result = sqrt(((2 * p.l + 1)*factorial(p.l-p.ml))/((4*pi) *factorial(p.l+p.ml))) *legendre *exp(p.ml *angles.var2);
 
 	}
+
 
 	void legendrePolynomial(float &result , float x, parameters p)
 	{
@@ -85,6 +93,12 @@ namespace myFuncion {
 			break;
 		}
 		
+	}
+
+	void stretchFunction(float& result, const float &x, parameters p) {
+		result = p.bondForce * pow((p.bondDistance-x), 2) ;
+
+
 	}
 }
 

@@ -1,11 +1,54 @@
 #include "MyMath.h"
 #include "Logging.h"
 
+
+
+//this and the next function are a recursive function for obtaining the combination of size r of an array of element
+//input vec , output, dimention of vec, and size of group
+void MyMath::getCombination(std::vector<int> arr , std::vector <int>& result,  int n, int r)
+{
+	// A temporary array to store  
+	// all combination one by one  
+	std::vector<int> data;
+	for (int i = 0; i < n; i++)
+		data.push_back(0);
+
+	// Print all combination using  
+	// temprary array 'data[]'  
+	combinationUtil(arr, result, n, r, 0, data, 0);
+}
+
+
+void MyMath::combinationUtil(std::vector<int> arr, std::vector <int> & result, int n, int r,
+	int index, std::vector<int> data, int i)
+{
+	// Current combination is ready, print it  
+	if (index == r)
+	{
+		for (int j = 0; j < r; j++)
+			result.push_back(data[j]);
+		return;
+	}
+
+	if (i >= n)
+		return;
+	
+	data[index] = arr[i];
+	
+	combinationUtil(arr, result, n, r, index + 1, data, i + 1);
+
+	combinationUtil(arr, result,  n, r, index, data, i + 1);
+}
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------------
 void MyMath::gradientCalculator(std::vector<float>& differential, float start, float end, float increment, parameters par, void(*func)(float&,const float&, const float&, const float&, parameters))
 {
 	//error checking:
-	if (increment == 0);
-		//Logging::errorLog("errror increment cannot be 0", Logging::nullObj());
+
 	
 	float xh = 0;
 	float yh = 0;
@@ -19,7 +62,7 @@ void MyMath::gradientCalculator(std::vector<float>& differential, float start, f
 	float equationResult = 0;
 
 
-	int nOfIteration = (end - start) / increment;
+	int nOfIteration = static_cast<int>((end - start) / increment);
 	std::cout << "number of iteration per each variable: " << nOfIteration << std::endl;
 	//differential.reserve(nOfIteration * nOfIteration * nOfIteration);
 
@@ -48,8 +91,6 @@ void MyMath::Laplacian(std::vector<float>& differential, float start, float end 
 {
 	//the laplacian is the sum of all'non mixed second order derivative
 
-	if (increment == 0);
-		//Logging::errorLog("errror increment cannot be 0", Logging::nullObj());
 
 	float xhPos = 0, yhPos = 0, zhPos =   0 ;
 	float xhNeg = 0, yhNeg = 0, zhNeg = 0;
@@ -62,7 +103,7 @@ void MyMath::Laplacian(std::vector<float>& differential, float start, float end 
 	float diffNeg = 0;
 	float equationResult = 0;
 
-	int nOfIteration = (end - start)/increment;
+	int nOfIteration = static_cast<int>((end - start)/increment);
 	//std::cout << "number of iteration per each variable: " << nOfIteration << std::endl;
 	//differential.reserve(nOfIteration * nOfIteration * nOfIteration);
 
@@ -100,7 +141,7 @@ void MyMath::secondDerivativeCalculator(const std::vector<float>& variable, std:
 	float equationResult = 0.0f;
 	float increment = 0.0f;
 	int max = variable.size();
-	for (int i = 0; i < variable.size(); i++) {
+	for (unsigned int i = 0; i < variable.size(); i++) {
 		
 		if (i == 0) {
 		
@@ -144,9 +185,9 @@ void MyMath::functionIterator(const std::vector <vec2d> space, std::vector<float
 	float result = 0;
 	float xvar = 0;
 	vec2d variable = { 0, 0};
-	for (int x = 0; x < space.size(); x++) {
+	for (unsigned int x = 0; x < space.size(); x++) {
 		xvar = space[x].var1;
-		for(int y = 0; y< space.size(); y++)
+		for(unsigned int y = 0; y< space.size(); y++)
 		{ 
 			variable.var1 = xvar;
 			variable.var2 = space[y].var2;
@@ -163,7 +204,7 @@ void MyMath::normalizeFunction(std::vector<float>& space)
 {
 	float maxVal = absMax(space);
 
-	for (int i = 0; i < space.size(); i++ ) {
+	for (unsigned int i = 0; i < space.size(); i++ ) {
 		space[i] = abs(space[i]/ maxVal);
 	}
 }
@@ -171,12 +212,12 @@ void MyMath::normalizeFunction(std::vector<float>& space)
 float MyMath::oneDimentionIntegral(const std::vector<float>& variable, float start, float end, float iteration, parameters par, void(*func)(float&, float, parameters))
 {
 	//for integration sum of all area of a infinitesimal dx step
-	float result = 0;
-	float stepResult0 = 0;
-	float stepResult1 = 0;
-	float position0 = 0;
-	float position1 = 0;
-	float increment = (end - start) / iteration;
+	float result = 0.0f;
+	float stepResult0 = 0.0f;
+	float stepResult1 = 0.0f;
+	float position0 = 0.0f;
+	float position1 = 0.0f;
+	float increment = ((end - start) / iteration);
 	for (int i = 0; i < iteration; i++)
 	{
 		position0 += increment;
@@ -184,7 +225,7 @@ float MyMath::oneDimentionIntegral(const std::vector<float>& variable, float sta
 		//how do i calculate the area??
 		func(stepResult0, position0, par);
 		func(stepResult1, position1, par);
-		result += (position1 - position0) * ((stepResult0 + stepResult1) * 0.5);
+		result += (position1 - position0) * ((stepResult0 + stepResult1) * 0.5f);
 	}
 	KRABS_ERROR("OK NOW");
 	return result;
@@ -195,7 +236,7 @@ float MyMath::oneDimentionIntegral(const std::vector<float>& variable, float sta
 void MyMath::sumBeteenVector(std::vector<float>& result, const std::vector <float>& sumBy)
 {
 	if (result.size() == sumBy.size()) {
-		for (int i = 0; i < result.size(); i++) {
+		for (unsigned int i = 0; i < result.size(); i++) {
 			result[i] += sumBy[i];
 		}
 	}
@@ -206,7 +247,7 @@ void MyMath::sumBeteenVector(std::vector<float>& result, const std::vector <floa
 
 void MyMath::diffBeteenVector(std::vector<float>& result, const std::vector <float>& sumBy)
 {
-	for (int i = 0; i < result.size(); i++) {
+	for (unsigned int i = 0; i < result.size(); i++) {
 		result[i] -= sumBy[i];
 	}
 }
@@ -293,10 +334,73 @@ float MyMath::absMax(const std::vector<float>& vec)
 	return maxVal;
 }
 
+
+float MyMath::calculateAngle(const std::vector<float>& vertex1, const std::vector<float>& vertex2, const std::vector<float>& vertexAngle)
+{
+	float result = 0.0f;
+	if (vertex1.size() == vertex2.size() && vertexAngle.size() == vertex2.size()) {
+	
+		std::vector<float> vectorA;
+		std::vector<float> vectorB;
+		float scalarProd = 0.0f;
+		float normA = 0.0f;
+		float normB = 0.0f;
+		// calculate the vector
+		for (unsigned int i = 0; i < vertex1.size(); i++) {
+			vectorA.push_back((vertex1[i] - vertexAngle[i]));
+			vectorB.push_back((vertex2[i] - vertexAngle[i]));
+	
+		}
+
+		scalarProd = scalarProduct(vectorA, vectorB);
+		
+		normA = vectorNorm(vectorA);
+		normB = vectorNorm(vectorB);
+		
+		//devo trasformarlo in gradi dal coseno
+		if (normA == 0 || normB == 0) {
+			KRABS_WARN("warning dividing by 0 consider to just shift your atom coord to a position that is not (0, 0, 0)");
+		}
+		result = 1/(cos(scalarProd / (normA * normB)));
+		return (180*result*(1/pi));
+	}
+	else {
+		KRABS_ERROR("error dimention do not corrispond line 318 mymath.cpp");
+		return 0.0f;
+	}
+	
+}
+
+float MyMath::vectorNorm(const std::vector<float>& vec)
+{
+	float result = 0;
+	for (auto i : vec)
+		result += (i * i);
+	
+	return sqrt(result);
+}
+
+float MyMath::scalarProduct(const std::vector<float>& vec1, const std::vector<float>& vec2)
+{
+	float result = 0.0f;
+	if (vec1.size() == vec2.size()) {
+		for (unsigned int i = 0; i < vec1.size(); i++) {
+			result += (vec1[i] * vec2[i]);
+		}
+		return  result;
+	}
+
+	else {
+		KRABS_ERROR("error vector size do not match, line 322 mymath.cpp");
+		return 0.0f;
+	}
+}
+
+
 void MyMath::fromSpatialToSpherical(std::vector<vec3d>& space)
 {
 	//returned by reference (r, theta, phi)
-	for (int i = 0; i < space.size(); i++)
+	for (unsigned int i = 0; i < space.size(); i++)
 	{
 		space[i].x = (sqrt(pow(space[i].x, 2) + pow(space[i].y, 2) + pow(space[i].z, 2))); //r
 		space[i].y = 1 / (sin(space[i].z / space[i].x)); // theta
@@ -304,10 +408,11 @@ void MyMath::fromSpatialToSpherical(std::vector<vec3d>& space)
 	}
 }
 
-void MyMath::vectorByScalar(std::vector<float> &vec, float scalar)
+
+void MyMath::vectorByConst(std::vector<float> &vec, float scalar)
 {
 	// do auto iterate by reference or by copy ? of vector
-	for (int i = 0; i < vec.size(); i++) {
+	for (unsigned int i = 0; i < vec.size(); i++) {
 		vec[i] *= scalar ;
 	}
 	
@@ -319,14 +424,14 @@ void MyMath::vectorByVector(std::vector<float>& result, const std::vector <float
 {
 	//only one dimention
 	if (result.size() == mul.size()) {
-		for (int i = 0; i < result.size(); i++) {
+		for (unsigned int i = 0; i < result.size(); i++) {
 			result[i] *= mul[i];
 		
 		}
 	}
-
 		//Logging::errorLog("dimention do not corrispond.", Logging::nullObj());
 }
+
 
 void MyMath::OneDimMatrixProduct(std::vector<float>& result, const std::vector<float>& mat2)
 {
@@ -336,10 +441,24 @@ void MyMath::OneDimMatrixProduct(std::vector<float>& result, const std::vector<f
 		KRABS_ERROR("incompatible matrix size for matrix multiplication");
 
 	else {
-		for (int i = 0; i < result.size(); i++) {
+		for (unsigned int i = 0; i < result.size(); i++) {
 			result[i] *= mat2[i];
 		}
 	}
+}
+
+
+float MyMath::vecDist(const std::vector<float>& pt1, const std::vector<float>& pt2)
+{
+	if (pt1.size() != pt2.size())
+		KRABS_ERROR("Error vector dimention do not corrispond");
+	float distance = 0;
+
+	for (int i = 0; i < pt1.size(); i++) {
+		distance += pow(pt1[i] - pt2[i], 2);
+
+	}
+	return sqrt(distance);
 }
 
 
@@ -353,6 +472,7 @@ float MyMath::exponentialSum(float base, std::vector<float>& exp)
 	return result;
 }
 
+
 float MyMath::factorial(int base)
 {
 	float result = 0;
@@ -362,7 +482,6 @@ float MyMath::factorial(int base)
 		for (int i = 0; i <= base; i++) {
 			result += (base * (base - i));
 		}
-
 		return result;
 	}
 }
